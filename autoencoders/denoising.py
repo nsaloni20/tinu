@@ -1,6 +1,3 @@
-"""
-Create a Denoising Autoencoder using Keras
-"""
 # pip install tensorflow numpy matplotlib
 
 import numpy as np
@@ -9,9 +6,7 @@ from tensorflow.keras.datasets import mnist
 from tensorflow.keras import layers, models
 import matplotlib.pyplot as plt
 
-# ==========================================
 # 1. Prepare Data (Add Noise)
-# ==========================================
 # Load MNIST data (we don't need labels y_train/y_test for autoencoders)
 (x_train, _), (x_test, _) = mnist.load_data()
 
@@ -32,9 +27,7 @@ def add_noise(images, noise_factor=0.5):
 x_train_noisy = add_noise(x_train)
 x_test_noisy = add_noise(x_test)
 
-# ==========================================
 # 2. Build the Autoencoder Model
-# ==========================================
 input_img = layers.Input(shape=(28, 28, 1))
 
 # --- Encoder (Compress the image) ---
@@ -56,9 +49,8 @@ autoencoder = models.Model(input_img, decoded)
 autoencoder.compile(optimizer='adam', loss='binary_crossentropy')
 autoencoder.summary()
 
-# ==========================================
 # 3. Train the Model
-# ==========================================
+
 # NOTICE: Input is NOISY, Target is CLEAN (x_train)
 autoencoder.fit(
     x_train_noisy, x_train,
@@ -68,9 +60,7 @@ autoencoder.fit(
     validation_data=(x_test_noisy, x_test)
 )
 
-# ==========================================
 # 4. Visualize Results
-# ==========================================
 decoded_imgs = autoencoder.predict(x_test_noisy)
 
 n = 5  # How many digits we will display
